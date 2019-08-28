@@ -1,11 +1,11 @@
-import 'dart:convert';
 
 class NoteData{
 
   String note;
   String content;
   num time;
-  String id;
+  int id;
+  String noteId;
   bool isFavorite;
   NoteImages noteImages = NoteImages();
 
@@ -21,6 +21,7 @@ class NoteData{
 
     data["id"] = id;
     data["note"] = note;
+    data["noteId"] = "note${DateTime.now().millisecondsSinceEpoch}";
     data["time"] = time;
     data["content"] = content;
     data["isFavorite"] = isFavorite;
@@ -31,8 +32,9 @@ class NoteData{
   }
 
   NoteData.fromSql(Map<String, dynamic> json) {
-    id = json['id'].toString();
+    id = json['id'];
     note = json['note'];
+    noteId = json['noteId'];
     content = json['content'];
     isFavorite = json['isFavorite'] == "1";
     time = json['time'];

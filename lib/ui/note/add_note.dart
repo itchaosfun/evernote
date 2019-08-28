@@ -1,8 +1,7 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
-import '../data/note.dart';
-import '../data/notemanager.dart';
+import '../../data/note.dart';
+import 'package:flutter1/common/note_manager.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -47,8 +46,6 @@ class AddNoteState extends State<AddNoteStatefulWidget>{
 
       onChanged: (text) {
         _noteTitle = text;
-        print("title = $_noteTitle , content = $_noteContent");
-        print("title input text = $text");
         setState(() {
         });
       },
@@ -69,8 +66,6 @@ class AddNoteState extends State<AddNoteStatefulWidget>{
       ),
       onChanged: (text) {
         _noteContent = text;
-        print("title = $_noteTitle , content = $_noteContent");
-        print("content input text = $text");
         setState(() {
         });
       },
@@ -167,10 +162,7 @@ class AddNoteState extends State<AddNoteStatefulWidget>{
     noteData.time = DateTime
         .now()
         .millisecondsSinceEpoch;
-    noteData.id = DateTime
-        .now()
-        .millisecond
-        .toString();
+
     noteData.noteImages.images = imageList;
     await NoteManager.instance.addNewNote(noteData);
 

@@ -1,18 +1,9 @@
 import 'package:sqflite/sqflite.dart';
 import 'dart:async';
 import 'package:path/path.dart';
-import 'package:flutter1/data/note.dart';
+import 'note_table_manager.dart';
 
 class DatabaseManager {
-
-  String noteTable = "noteTable";
-  String id = "id";
-  String note = "note";
-  String content= "content";
-  String isFavorite= "isFavorite";
-  String time= "time";
-  String imageList = "imageList";
-
 
   static DatabaseManager _instance;
 
@@ -39,46 +30,13 @@ class DatabaseManager {
   initDb() async{
     String databasePath = await getDatabasesPath();
     String path  = join (databasePath,"clever_note.db");
-    var db = await openDatabase(path,version: 2,onCreate: _onCreate);
+    var db = await openDatabase(path,version: 2,onCreate: (Database db, int version) async {});
     return db;
   }
 
-  void _onCreate(Database db, int version) async {
-    await db.execute(
-        "CREATE TABLE $noteTable($id INTEGER_PRIMARY KEY,$note TEXT,$content TEXT,$imageList TEXT,$isFavorite TEXT,$time INTEGER)");
+  Future<bool> checkTableIsExits(String tableName)async{
+    var db = await database;
+    var res=await db.rawQuery("select * from Sqlite_master where type = 'table' and name = '$tableName'");
+    return res!=null && res.length >0;
   }
-
-  Future<int> insertNote(NoteData note) async{
-    var client = await database;
-    var result = client.insert(noteTable, note.toJson());
-    return result;
-  }
-
-  Future<List<NoteData>> getNotes({int limit,int offset}) async{
-    var dbClient = await database;
-    var result = await dbClient.query(
-        noteTable,
-        columns: [id,note,content,imageList,isFavorite,time],
-        limit: limit,
-        offset: offset
-    );
-
-    List<NoteData> notes = [];
-    result.forEach((item) =>
-      notes.add(NoteData.fromSql(item))
-    );
-
-    return notes;
-  }
-
-  Future<int> removeNote(NoteData note) async{
-    var dbClient = await database;
-    return dbClient.delete(noteTable,where: "$id=?",whereArgs: [note.id]);
-  }
-
-  Future<int> updateNote(NoteData note) async {
-    var dbClient = await database;
-    return await dbClient.update(noteTable, note.toJson(),where: "$id=?",whereArgs: [note.id]);
-  }
-
 }

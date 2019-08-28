@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../data/favorite.dart';
+import '../../data/favorite.dart';
 
 // ignore: must_be_immutable
 class SaveList extends StatelessWidget {

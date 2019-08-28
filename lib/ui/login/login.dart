@@ -1,9 +1,15 @@
-
 import 'package:flutter/material.dart';
+import 'package:flutter1/platform/widget/common_button.dart';
 import 'register.dart';
 import 'forgetpwd.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import '../../common/user_manager.dart';
+import '../../common/constance.dart';
+import '../home/home_page.dart';
+import '../../platform/widget/tips_dialog.dart';
+import 'setpwd.dart';
 
-void main() => runApp(Login());
+void main(){ runApp(Login());}
 
 class Login extends StatelessWidget{
   @override
@@ -19,18 +25,16 @@ class LoginWidget extends StatefulWidget{
   }
 }
 
-
 class LoginState extends State<LoginWidget>{
 
   bool isShowPwd = false;
-  String pwd = "";
-  String userName = "";
+  String _pwd = "";
+  String _userName = "";
 
   @override
   Widget build(BuildContext buildContext) {
 
     var userNameTextField = Container(
-        padding: EdgeInsets.only(left: 20,right: 20),
         child: TextField(
           autofocus: false,
           maxLines: 1,
@@ -44,19 +48,20 @@ class LoginState extends State<LoginWidget>{
             ),
           ),
           onChanged: (userName){
-            this.userName = userName;
+            _userName = userName;
+            setState(() {
+            });
           },
         )
     );
 
     var passwordTextField = Container(
-      padding: EdgeInsets.only(left: 20,right: 20),
       child: TextField(
         controller: TextEditingController.fromValue(TextEditingValue(
-          text: pwd,
+          text: _pwd,
           selection: TextSelection.fromPosition(TextPosition(
             affinity: TextAffinity.downstream,
-            offset: pwd.length
+            offset: _pwd.length
           ))
         )),
         autofocus: false,
@@ -77,13 +82,15 @@ class LoginState extends State<LoginWidget>{
           )
         ),
         onChanged: (password){
-          pwd = password;
+          _pwd = password;
+          setState(() {
+          });
         },
       ),
     );
 
     var extralInfoText = Container(
-      padding: EdgeInsets.all(20),
+      padding: EdgeInsets.only(top: 20,bottom: 20),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -94,6 +101,7 @@ class LoginState extends State<LoginWidget>{
       ),
     );
 
+
     return MaterialApp(
       theme: ThemeData(
         appBarTheme: AppBarTheme(color: Colors.blueGrey)
@@ -103,18 +111,79 @@ class LoginState extends State<LoginWidget>{
           title: Text("Wekcome To Note",style: TextStyle(inherit: true,color: Colors.white,fontSize: 20),),
           centerTitle: true,
         ),
-        body: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            userNameTextField,
-            Padding(padding: EdgeInsets.only(top: 10)),
-            passwordTextField,
-            extralInfoText
-          ],
+        body: Container(
+          padding: EdgeInsets.only(left: 20,right: 20),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              userNameTextField,
+              Padding(padding: EdgeInsets.only(top: 10)),
+              passwordTextField,
+              extralInfoText,
+              Container(
+                padding: EdgeInsets.only(top: 20),
+                child: CommonButton("登  录",(context){
+                  startLogin(context,);
+                }),
+              )
+            ],
+          ),
         ),
       ),
     );
+  }
+
+  void startLogin(context) {
+    if(_userName == null ||_userName.isEmpty){
+       Fluttertoast.showToast(
+          msg: "用户名不能为空",
+          toastLength: Toast.LENGTH_SHORT
+       );
+
+       return;
+    }
+
+    if(_pwd == null ||_pwd.isEmpty){
+      Fluttertoast.showToast(
+          msg: "密码不能为空",
+          toastLength: Toast.LENGTH_SHORT
+      );
+      return;
+    }
+
+    login(context);
+  }
+
+  void login(context)async{
+    print("开始登陆");
+    var errorCode = await UserManager.getInstance().checkLogin(_userName, _pwd);
+    print("errorCode = ${errorCode.errorString}");
+    Fluttertoast.showToast(
+        msg: errorCode.errorString,
+        toastLength: Toast.LENGTH_SHORT
+    );
+
+    if(errorCode.errorCode == SUCCESS_CODE){
+      if(UserManager.getInstance().password == UserManager.getInstance().phone){
+        //首次登录需要设置密码
+        showDialog(
+            context: context,
+            builder: (BuildContext context){
+              return TipsDialogWidget("您还未设置密码，\n正在为您跳转到设置密码页面",3,(){
+                //倒计时结束，跳转到设置密码界面
+                Navigator.of(context).push(
+                  MaterialPageRoute(builder: (context) => SetPwd())
+                );
+              });
+            }
+        );
+      }else{
+        Navigator.of(context).push(
+          MaterialPageRoute(builder: (context) => NoteList())
+        );
+      }
+    }
   }
 }
 
@@ -132,14 +201,10 @@ class ForgetPwdText extends StatelessWidget{
               ),
             ),
             onTap: () {
-              pushToForgetPwd(context);
+              Navigator.of(context).push(MaterialPageRoute(builder: (context) => ForgetPwd()));
             }
         )
     );
-  }
-
-  void pushToForgetPwd(BuildContext context) {
-    Navigator.of(context).push(MaterialPageRoute(builder: (context) => ForgetPwd()));
   }
 }
 
@@ -157,13 +222,9 @@ class RegisterText extends StatelessWidget{
               ),
             ),
             onTap: () {
-              pushToRegister(context);
+              Navigator.of(context).push(MaterialPageRoute(builder: (context) => Register()));
             }
         )
     );
-  }
-
-  void pushToRegister(BuildContext context) {
-    Navigator.of(context).push(MaterialPageRoute(builder: (context) => Register()));
   }
 }

@@ -1,16 +1,15 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:flutter1/note/detail.dart';
-import 'package:flutter1/note/savelist.dart';
-import '../data/notemanager.dart';
-import '../data/note.dart';
+import '../note/detail.dart';
+import '../note/savelist.dart';
+import '../../common/note_manager.dart';
+import '../../data/note.dart';
 import '../note/add_note.dart';
-import '../platform/widget/popup_widget.dart';
-import '../platform/widget/pop_route.dart';
+import '../../platform/widget/popup_widget.dart';
+import '../../platform/widget/pop_route.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter1/platform/widget/click_icon.dart';
 import 'package:flutter/cupertino.dart';
-
 
 class NoteList extends StatelessWidget {
 
