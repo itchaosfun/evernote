@@ -18,13 +18,13 @@ class UserDbManager extends BaseDbTable{
   String header = "header";
   String gender = "gender";
 
-  static UserDbManager _noteDbManager;
+  static UserDbManager userDbManager;
 
   static UserDbManager getInstance(){
-    if(_noteDbManager == null){
-      _noteDbManager = UserDbManager();
+    if(userDbManager == null){
+      userDbManager = UserDbManager();
     }
-    return _noteDbManager;
+    return userDbManager;
   }
   Database _database;
 

@@ -13,13 +13,13 @@ class NoteDbManager extends BaseDbTable{
   String time= "time";
   String imageList = "imageList";
 
-  static NoteDbManager _noteDbManager;
+  static NoteDbManager noteDbManager;
 
   static NoteDbManager getInstance(){
-    if(_noteDbManager == null){
-      _noteDbManager = NoteDbManager();
+    if(noteDbManager == null){
+      noteDbManager = NoteDbManager();
     }
-    return _noteDbManager;
+    return noteDbManager;
   }
 
   @override
