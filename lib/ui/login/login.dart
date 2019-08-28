@@ -28,11 +28,16 @@ class LoginWidget extends StatefulWidget{
 class LoginState extends State<LoginWidget>{
 
   bool isShowPwd = false;
-  String _pwd = "";
-  String _userName = "";
+  String pwd = "";
+  String userName = "";
 
   @override
   Widget build(BuildContext buildContext) {
+
+    var noteIcon = Container(
+      padding: EdgeInsets.only(top: 20,bottom: 20),
+      child: Image.asset("image/note.png"),
+    );
 
     var userNameTextField = Container(
         child: TextField(
@@ -47,8 +52,8 @@ class LoginState extends State<LoginWidget>{
                 borderRadius: BorderRadius.all(Radius.circular(6))
             ),
           ),
-          onChanged: (userName){
-            _userName = userName;
+          onChanged: (username){
+            userName = username;
             setState(() {
             });
           },
@@ -58,10 +63,10 @@ class LoginState extends State<LoginWidget>{
     var passwordTextField = Container(
       child: TextField(
         controller: TextEditingController.fromValue(TextEditingValue(
-          text: _pwd,
+          text: pwd,
           selection: TextSelection.fromPosition(TextPosition(
             affinity: TextAffinity.downstream,
-            offset: _pwd.length
+            offset: pwd.length
           ))
         )),
         autofocus: false,
@@ -82,7 +87,7 @@ class LoginState extends State<LoginWidget>{
           )
         ),
         onChanged: (password){
-          _pwd = password;
+          pwd = password;
           setState(() {
           });
         },
@@ -113,21 +118,24 @@ class LoginState extends State<LoginWidget>{
         ),
         body: Container(
           padding: EdgeInsets.only(left: 20,right: 20),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              userNameTextField,
-              Padding(padding: EdgeInsets.only(top: 10)),
-              passwordTextField,
-              extralInfoText,
-              Container(
-                padding: EdgeInsets.only(top: 20),
-                child: CommonButton("登  录",(context){
-                  startLogin(context,);
-                }),
-              )
-            ],
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                noteIcon,
+                userNameTextField,
+                Padding(padding: EdgeInsets.only(top: 10)),
+                passwordTextField,
+                extralInfoText,
+                Container(
+                  padding: EdgeInsets.only(top: 20),
+                  child: CommonButton("登  录",(context){
+                    startLogin(context,);
+                  }),
+                )
+              ],
+            ),
           ),
         ),
       ),
@@ -135,7 +143,7 @@ class LoginState extends State<LoginWidget>{
   }
 
   void startLogin(context) {
-    if(_userName == null ||_userName.isEmpty){
+    if(userName == null ||userName.isEmpty){
        Fluttertoast.showToast(
           msg: "用户名不能为空",
           toastLength: Toast.LENGTH_SHORT
@@ -144,7 +152,7 @@ class LoginState extends State<LoginWidget>{
        return;
     }
 
-    if(_pwd == null ||_pwd.isEmpty){
+    if(pwd == null ||pwd.isEmpty){
       Fluttertoast.showToast(
           msg: "密码不能为空",
           toastLength: Toast.LENGTH_SHORT
@@ -157,7 +165,7 @@ class LoginState extends State<LoginWidget>{
 
   void login(context)async{
     print("开始登陆");
-    var errorCode = await UserManager.getInstance().checkLogin(_userName, _pwd);
+    var errorCode = await UserManager.getInstance().checkLogin(userName, pwd);
     print("errorCode = ${errorCode.errorString}");
     Fluttertoast.showToast(
         msg: errorCode.errorString,

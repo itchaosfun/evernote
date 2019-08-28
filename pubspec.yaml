@@ -52,6 +52,8 @@ flutter:
     - image/eye_close.png
     - image/eye_open.png
     - image/register_header_bg.jpg
+    - image/note.png
+    - image/default_header.png
   #  - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

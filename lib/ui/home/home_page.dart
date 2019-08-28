@@ -36,7 +36,7 @@ class NoteListWidgetState extends State<NoteListWidget> {
 
   List<NoteData> noteList = [];
 
-  final _biggerFont = const TextStyle(fontSize: 18.0);
+  final biggerFont = const TextStyle(fontSize: 18.0);
 
   @override
   void deactivate() {
@@ -73,7 +73,7 @@ class NoteListWidgetState extends State<NoteListWidget> {
             "Welcome To Note"
         ),
         actions: <Widget>[
-          new IconButton(icon: new Icon(Icons.list), onPressed: _showPopMenu)],
+          new IconButton(icon: new Icon(Icons.list), onPressed: showPopMenu)],
       ),
       body: _buildSuggestions(),
     );
@@ -84,7 +84,7 @@ class NoteListWidgetState extends State<NoteListWidget> {
       itemBuilder: (context, index) {
         if (index < noteList.length) {
           var item = noteList.elementAt(index);
-          return _buildRows(index, item);
+          return buildRows(index, item);
         }
       },
       separatorBuilder: (context, index) {
@@ -98,10 +98,10 @@ class NoteListWidgetState extends State<NoteListWidget> {
     );
   }
 
-  Widget _buildRows(index, NoteData note) {
+  Widget buildRows(index, NoteData note) {
     var gestureDetector = GestureDetector(
       onTap: () {
-        _pushDetail(note);
+        pushDetail(note);
       },
       child: Container(
         padding: EdgeInsets.all(8),
@@ -124,7 +124,7 @@ class NoteListWidgetState extends State<NoteListWidget> {
 
                     Text(
                       note.note,
-                      style: _biggerFont,
+                      style: biggerFont,
                       textAlign: TextAlign.justify,
                       overflow: TextOverflow.ellipsis,
                     ),
@@ -153,7 +153,7 @@ class NoteListWidgetState extends State<NoteListWidget> {
                   color: note.isFavorite ? Colors.red : Colors.blueGrey,
                 ),
                 Text(
-                  _getFormatTime(note.time),
+                  getFormatTime(note.time),
                   style: new TextStyle(
                       fontSize: 12
                   ),
@@ -190,14 +190,14 @@ class NoteListWidgetState extends State<NoteListWidget> {
     return dismiss;
   }
 
-  _pushDetail(NoteData note) {
+  pushDetail(NoteData note) {
     print("push to detail page");
     Navigator.of(context).push(
         new MaterialPageRoute(builder: (context) => Detail(note))
     );
   }
 
-  String _getFormatTime(time) {
+  String getFormatTime(time) {
     var dateTime = DateTime.fromMillisecondsSinceEpoch(time);
     var timeString = "${dateTime.year.toString()}"
         "-${dateTime.month.toString().padLeft(2, "0")}"
@@ -206,7 +206,7 @@ class NoteListWidgetState extends State<NoteListWidget> {
     return timeString;
   }
 
-  _showPopMenu() {
+  showPopMenu() {
     Navigator.of(context).push(PopRoute(child: PopWidget(child: Container(
       color: Colors.blueGrey,
       child: new ListView(

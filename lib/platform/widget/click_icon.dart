@@ -3,11 +3,11 @@ import 'package:flutter1/platform/widget/platform_tap_widget.dart';
 
 class ClickIcon extends StatelessWidget{
 
-  final Icon _icon;
-  final Text _text;
-  final Function _onTap;
+  final Icon icon;
+  final Text text;
+  final Function onTap;
 
-  ClickIcon(this._icon,this._text,this._onTap);
+  ClickIcon(this.icon,this.text,this.onTap);
 
   @override
   Widget build(BuildContext context) {
@@ -15,11 +15,11 @@ class ClickIcon extends StatelessWidget{
           Column(
             mainAxisAlignment: MainAxisAlignment.end,
             children: <Widget>[
-              _icon,
-              _text
+              icon,
+              text
             ],
           ),
-          _onTap,
+          onTap,
         );
   }
 
