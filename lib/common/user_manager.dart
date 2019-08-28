@@ -13,6 +13,8 @@ class UserManager {
   String header;
   int gender;
 
+  UserInfo userInfo;
+
   static UserManager _userManager;
 
   static UserManager getInstance(){
@@ -32,6 +34,7 @@ class UserManager {
     this.gender = userInfo.gender;
   }
 
+
   Future<ErrorCode> checkLogin(String userName,String password)async {
     print("登录用户校验");
     var userInfo = await UserDbManager.getInstance().getUserInfoByUserName(userName);
@@ -46,10 +49,18 @@ class UserManager {
 
     saveUser(userInfo);
 
+    this.userInfo = userInfo;
+
     return ErrorCode(SUCCESS_CODE,SUCCESS_DESC);
   }
 
   Future<int> register(UserInfo userInfo) async{
    return await UserDbManager.getInstance().insertUser(userInfo);
+  }
+
+  Future<int> updatePwd(String password) async {
+    userInfo.password = password;
+    this.password = password;
+    return await UserDbManager.getInstance().updateNote(userInfo);
   }
 }
