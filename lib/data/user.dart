@@ -13,13 +13,15 @@ class UserInfo{
 
   @override
   String toString() {
-    return "userId = $userId, userName = $userName, phone = $phone, "
+    return "id = $id, userId = $userId, userName = $userName, phone = $phone, "
         "password = $password, birthday = $birthday, header = $header, gender = ${gender==0?"男":"女"}";
   }
 
   Map<String,Object> toJson(){
     Map data = new Map<String,Object>();
-    data["id"] = id;
+    if(id != null){
+      data["id"] = id;
+    }
     data["userId"] = userId;
     data["userName"] = userName;
     data["password"] = password;
@@ -27,7 +29,7 @@ class UserInfo{
     data["birthday"] = birthday;
     data["header"] = header;
     data["gender"] = gender;
-
+    print(data);
     return data;
   }
 
@@ -35,6 +37,7 @@ class UserInfo{
     if(json == null || json.isEmpty){
       return;
     }
+    id = json['id'];
     userId = json['userId'];
     userName = json['userName'];
     password = json['password'];

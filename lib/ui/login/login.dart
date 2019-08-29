@@ -180,15 +180,15 @@ class LoginState extends State<LoginWidget>{
             builder: (BuildContext context){
               return TipsDialogWidget("您还未设置密码，\n正在为您跳转到设置密码页面",3,(){
                 //倒计时结束，跳转到设置密码界面
-                Navigator.of(context).push(
-                  MaterialPageRoute(builder: (context) => SetPwd())
+                Navigator.of(context).pushAndRemoveUntil(
+                  MaterialPageRoute(builder: (context) => SetPwd()),(route) => false
                 );
               });
             }
         );
       }else{
-        Navigator.of(context).push(
-          MaterialPageRoute(builder: (context) => NoteList())
+        Navigator.of(context).pushAndRemoveUntil(
+          MaterialPageRoute(builder: (context) => NoteList()),(route)=>false
         );
       }
     }
