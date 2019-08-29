@@ -11,6 +11,8 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter1/platform/widget/click_icon.dart';
 import 'package:flutter/cupertino.dart';
 
+import 'drawer_page.dart';
+
 class NoteList extends StatelessWidget {
 
   @override
@@ -36,6 +38,8 @@ class NoteListWidgetState extends State<NoteListWidget> {
 
   List<NoteData> noteList = [];
 
+  GlobalKey<ScaffoldState> scaffoldKey = new GlobalKey();
+
   final biggerFont = const TextStyle(fontSize: 18.0);
 
   @override
@@ -43,11 +47,11 @@ class NoteListWidgetState extends State<NoteListWidget> {
     super.deactivate();
     print("deactivate");
 
-    Future<List<NoteData>> noteFuture = NoteManager.instance.getNotes(100, 1);
+    Future<List<NoteData>> noteFuture = NoteManager.getInstance().getNotes(100, 0);
     noteFuture.then((list) {
       if ((noteList.isEmpty && list.isNotEmpty) || noteList != list) {
         noteList = list;
-        print("开始刷新页面");
+        print("页面返回，开始刷新页面");
         setState(() {});
       }
     });
@@ -57,7 +61,7 @@ class NoteListWidgetState extends State<NoteListWidget> {
   Widget build(BuildContext context) {
     if (noteList.length <= 0) {
       print("notelist size = 0");
-      Future<List<NoteData>> noteFuture = NoteManager.instance.getNotes(100, 1);
+      Future<List<NoteData>> noteFuture = NoteManager.getInstance().getNotes(100, 0);
       noteFuture.then((list) {
         if(list.isNotEmpty ){
           noteList = list;
@@ -67,20 +71,26 @@ class NoteListWidgetState extends State<NoteListWidget> {
       });
     }
 
-    return new Scaffold(
-      appBar: new AppBar(
-        title: new Text(
-            "Welcome To Note"
+    return Scaffold(
+      key: scaffoldKey,
+      drawer: DrawerWidget(),
+      appBar: AppBar(
+        leading: IconButton(icon: Icon(Icons.person,color: Colors.white),onPressed: (){
+          scaffoldKey.currentState.openDrawer();
+        },),
+        centerTitle: true,
+        title: Text(
+            "My Notes"
         ),
         actions: <Widget>[
-          new IconButton(icon: new Icon(Icons.list), onPressed: showPopMenu)],
+          IconButton(icon: Icon(Icons.list), onPressed: showPopMenu)],
       ),
-      body: _buildSuggestions(),
+      body: buildNoteItem(),
     );
   }
 
-  Widget _buildSuggestions() {
-    return new ListView.separated(
+  Widget buildNoteItem() {
+    return ListView.separated(
       itemBuilder: (context, index) {
         if (index < noteList.length) {
           var item = noteList.elementAt(index);
@@ -154,7 +164,7 @@ class NoteListWidgetState extends State<NoteListWidget> {
                 ),
                 Text(
                   getFormatTime(note.time),
-                  style: new TextStyle(
+                  style: TextStyle(
                       fontSize: 12
                   ),
                   textAlign: TextAlign.right,
@@ -163,7 +173,7 @@ class NoteListWidgetState extends State<NoteListWidget> {
                 ), () {
               setState(() {
                 note.isFavorite = !note.isFavorite;
-                NoteManager.instance.updateNote(note);
+                NoteManager.getInstance().updateNote(note);
                 setState(() {});
               });
             }
@@ -174,14 +184,14 @@ class NoteListWidgetState extends State<NoteListWidget> {
     );
 
     var dismiss = Dismissible(
-        key: new Key("key$note"),
+        key: Key("key$note"),
         onDismissed: (direction) {
           noteList.remove(note);
           print("noteList length = ${noteList.length}");
-          NoteManager.instance.remove(note);
+          NoteManager.getInstance().remove(note);
           setState(() {});
         },
-        background: new Container(
+        background: Container(
           color: Colors.red,
         ),
         child: gestureDetector
@@ -193,7 +203,7 @@ class NoteListWidgetState extends State<NoteListWidget> {
   pushDetail(NoteData note) {
     print("push to detail page");
     Navigator.of(context).push(
-        new MaterialPageRoute(builder: (context) => Detail(note))
+        MaterialPageRoute(builder: (context) => Detail(note))
     );
   }
 
@@ -209,28 +219,28 @@ class NoteListWidgetState extends State<NoteListWidget> {
   showPopMenu() {
     Navigator.of(context).push(PopRoute(child: PopWidget(child: Container(
       color: Colors.blueGrey,
-      child: new ListView(
+      child: ListView(
         children: <Widget>[
-          new ListTile(
-            title: new Text("My Favor",
-              style: new TextStyle(color: Colors.amber, fontSize: 14),),
+          ListTile(
+            title: Text("My Favor",
+              style: TextStyle(color: Colors.amber, fontSize: 14),),
             onTap: () {
               Navigator.of(context).pop();
               Navigator.of(context).push(
-                new MaterialPageRoute(builder: (context) => SaveList()),
+                MaterialPageRoute(builder: (context) => SaveList()),
               );
             },
           ),
 
-          new Divider(height: 1, color: Colors.brown,),
+          Divider(height: 1, color: Colors.brown,),
 
-          new ListTile(
-            title: new Text("New Note",
-              style: new TextStyle(color: Colors.amber, fontSize: 14),),
+          ListTile(
+            title: Text("New Note",
+              style: TextStyle(color: Colors.amber, fontSize: 14),),
             onTap: () {
               Navigator.of(context).pop();
               Navigator.of(context).push(
-                  new MaterialPageRoute(builder: (context) => AddNote())
+                  MaterialPageRoute(builder: (context) => AddNote())
               );
             },
           ),

@@ -3,7 +3,7 @@ import 'package:flutter1/data/note.dart';
 import 'dart:io';
 import 'package:flutter_swiper/flutter_swiper.dart';
 
-class Detail extends StatelessWidget {
+class Detail extends StatefulWidget {
   // This widget is the root of your application.
 
   NoteData note;
@@ -11,6 +11,21 @@ class Detail extends StatelessWidget {
   Detail(NoteData noteData){
     this.note = noteData;
   }
+
+  @override
+  State<StatefulWidget> createState() {
+    return DetailState(note);
+  }
+
+
+
+}
+
+class DetailState extends State<Detail>{
+
+  NoteData note;
+
+  DetailState(this.note);
 
   @override
   Widget build(BuildContext context) {
@@ -21,23 +36,23 @@ class Detail extends StatelessWidget {
       padding: EdgeInsets.only(left: 10,right: 32,top: 20,bottom: 5),
       child: Row(
         children: <Widget>[
-           Expanded(
+          Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   Container(
                     padding: EdgeInsets.only(bottom: 8),
                     child: Text(
-                        note.note,
-                        style: TextStyle(
+                      note.note,
+                      style: TextStyle(
                           fontWeight: FontWeight.bold
-                        ),
+                      ),
                     ),
                   ),
                   Text(
-                    _getFormatTime(note.time),
+                    getFormatTime(note.time),
                     style: TextStyle(
-                      color: Colors.grey
+                        color: Colors.grey
                     ),
                   )
                 ],
@@ -50,9 +65,9 @@ class Detail extends StatelessWidget {
     Widget textSection = Container(
       padding: EdgeInsets.only(left: 32,right: 32,bottom: 20,top: 15),
       child: Text(
-          note.content,
-          textAlign: TextAlign.start,
-          softWrap: true,
+        note.content,
+        textAlign: TextAlign.start,
+        softWrap: true,
       ),
     );
 
@@ -61,22 +76,22 @@ class Detail extends StatelessWidget {
         primarySwatch: Colors.blueGrey,
       ),
       home: Scaffold(
-        appBar: AppBar(
-          title: Text("My Note"),
-        ),
+          appBar: AppBar(
+            title: Text("My Note"),
+          ),
 
-        body: ListView(
-          shrinkWrap: true,
-          children: <Widget>[
-            Container(
-              child: getImage(list),
-              height: 240,
-            ),
-            titleSection,
-            Divider(height: 1,color: Colors.blueGrey,),
-            textSection,
-          ],
-        )
+          body: ListView(
+            shrinkWrap: true,
+            children: <Widget>[
+              Container(
+                child: getImage(list),
+                height: 240,
+              ),
+              titleSection,
+              Divider(height: 1,color: Colors.blueGrey,),
+              textSection,
+            ],
+          )
       ),
     );
   }
@@ -95,7 +110,7 @@ class Detail extends StatelessWidget {
     }
   }
 
-  String _getFormatTime(time) {
+  String getFormatTime(time) {
     var dateTime = DateTime.fromMillisecondsSinceEpoch(time);
     var timeString = "${dateTime.year.toString()}"
         "-${dateTime.month.toString().padLeft(2, "0")}"
@@ -130,9 +145,9 @@ class Detail extends StatelessWidget {
     var images = note.noteImages.images;
     if(images == null || images.isEmpty){
       list.add(Image.asset(
-        "image/kaola.jpg",
-        height: 240,
-        fit: BoxFit.cover));
+          "image/kaola.jpg",
+          height: 240,
+          fit: BoxFit.cover));
       return list;
     }
     for(var image in images){
@@ -142,7 +157,7 @@ class Detail extends StatelessWidget {
         fit: BoxFit.cover,
       ));
     }
-    print("list size = ${list.length}");
     return list;
   }
+
 }

@@ -121,8 +121,8 @@ class SetPwdState extends State<SetPwdWidget>{
               confirmPwdWidget(),
               Container(
                 padding: EdgeInsets.only(top: 20),
-                child: CommonButton("设  置", (){
-                  setPwd();
+                child: CommonButton("设  置", (context){
+                  setPwd(context);
                 }),
               )
             ],
@@ -132,7 +132,7 @@ class SetPwdState extends State<SetPwdWidget>{
     );
   }
 
-  void setPwd()async {
+  void setPwd(context)async {
     if(inputPwd == null || inputPwd.isEmpty || confirmPwd == null || confirmPwd.isEmpty){
       Fluttertoast.showToast(msg: "密码不能为空");
       return;
@@ -149,11 +149,11 @@ class SetPwdState extends State<SetPwdWidget>{
       context: context,
       builder: (BuildContext context){
         return TipsDialogWidget("设置密码成功！\n正在为您跳转...", 3, (){
-          Navigator.of(context).push(
-            MaterialPageRoute(builder: (context) => NoteList())
+          Navigator.of(context).pushAndRemoveUntil(
+              MaterialPageRoute(builder: (context) => NoteList()),(route)=> false
           );
         });
-    }
+      }
     );
   }
 }

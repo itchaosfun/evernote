@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:flutter1/platform/widget/tips_dialog.dart';
 import '../../data/note.dart';
 import 'package:flutter1/common/note_manager.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -93,7 +94,7 @@ class AddNoteState extends State<AddNoteStatefulWidget>{
           title: new Text("Add Note"),
           actions: <Widget>[
             new IconButton(icon: Icon(Icons.done),
-                onPressed: _submit)
+                onPressed: submit)
           ],
         ),
 
@@ -130,7 +131,7 @@ class AddNoteState extends State<AddNoteStatefulWidget>{
     );
   }
 
-  _submit() async {
+  submit() async {
     print("title = $_noteTitle , content = $_noteContent");
 
     if (_noteTitle
@@ -164,14 +165,23 @@ class AddNoteState extends State<AddNoteStatefulWidget>{
         .millisecondsSinceEpoch;
 
     noteData.noteImages.images = imageList;
-    await NoteManager.instance.addNewNote(noteData);
 
-    Navigator.of(context).pop();
-
+    await NoteManager.getInstance().addNewNote(noteData);
+    showDialog(
+        context: context,
+        builder: (BuildContext buildContext){
+          return TipsDialogWidget("新增成功！\n正在为您跳转...", 3, (){
+            Navigator.of(context).pop();
+          });
+        }
+    );
   }
 
   void selectImage()async{
     var image = await ImagePicker.pickImage(source: ImageSource.gallery);
+    if(image == null){
+      return;
+    }
     print(image.path);
     imageList.add(image.path);
     imageWidgetList.add(Image.file(image,width: 100,height: 100,fit: BoxFit.fill,));

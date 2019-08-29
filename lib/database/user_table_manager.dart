@@ -6,7 +6,6 @@ import 'db_base_table.dart';
 
 class UserDbManager extends BaseDbTable{
 
-
   String userTable = "UserTable";
 
   String id = "id";
@@ -67,9 +66,9 @@ class UserDbManager extends BaseDbTable{
     return UserInfo.fromSql(result.first);
   }
 
-  Future<int> updateNote(UserInfo userInfo) async {
+  Future<int> updateUser(UserInfo userInfo) async {
     var dbClient = await getDataBase();
-    return await dbClient.update(userName, userInfo.toJson(),where: "$userId=?",whereArgs: [userInfo.userId]);
+    return await dbClient.update(userTable, userInfo.toJson(),where: "$userId = ?",whereArgs: [userInfo.userId]);
   }
 
 }

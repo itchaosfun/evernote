@@ -5,19 +5,13 @@ import 'dart:core';
 
 class NoteManager {
 
-  factory ()=> _getInstance();
+  static NoteManager noteManager;
 
-  NoteManager._internal();
-
-  static NoteManager get instance => _getInstance();
-
-  static NoteManager _instance;
-
-  static _getInstance() {
-    if (_instance == null) {
-      _instance = NoteManager._internal();
+  static getInstance() {
+    if (noteManager == null) {
+      noteManager = NoteManager();
     }
-    return _instance;
+    return noteManager;
   }
 
   Future<List<NoteData>> getNotes(int limit, int offset){

@@ -12,6 +12,7 @@ class UserManager {
   String birthday;
   String header;
   int gender;
+  int id;
 
   UserInfo userInfo;
 
@@ -25,6 +26,7 @@ class UserManager {
   }
 
   void saveUser(UserInfo userInfo){
+    this.id = userInfo.id;
     this.userId = userInfo.userId;
     this.userName = userInfo.userName;
     this.password = userInfo.password;
@@ -36,7 +38,7 @@ class UserManager {
 
 
   Future<ErrorCode> checkLogin(String userName,String password)async {
-    print("登录用户校验");
+    print("登录用户校验 $userName");
     var userInfo = await UserDbManager.getInstance().getUserInfoByUserName(userName);
     print("userInfo = ${userInfo.toString()}");
 
@@ -61,6 +63,7 @@ class UserManager {
   Future<int> updatePwd(String password) async {
     userInfo.password = password;
     this.password = password;
-    return await UserDbManager.getInstance().updateNote(userInfo);
+    print(userInfo.toString());
+    return await UserDbManager.getInstance().updateUser(userInfo);
   }
 }
