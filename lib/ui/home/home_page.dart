@@ -10,7 +10,6 @@ import '../../platform/widget/pop_route.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter1/platform/widget/click_icon.dart';
 import 'package:flutter/cupertino.dart';
-
 import 'drawer_page.dart';
 
 class NoteList extends StatelessWidget {
@@ -83,7 +82,7 @@ class NoteListWidgetState extends State<NoteListWidget> {
             "My Notes"
         ),
         actions: <Widget>[
-          IconButton(icon: Icon(Icons.list), onPressed: showPopMenu)],
+          IconButton(icon: Icon(Icons.view_list), onPressed: showPopMenu)],
       ),
       body: buildNoteItem(),
     );
@@ -221,10 +220,13 @@ class NoteListWidgetState extends State<NoteListWidget> {
       color: Colors.blueGrey,
       child: ListView(
         children: <Widget>[
-          ListTile(
-            title: Text("My Favor",
-              style: TextStyle(color: Colors.amber, fontSize: 14),),
-            onTap: () {
+
+          GestureDetector(
+            child: Center(
+              child: Text("查 找",
+                style: TextStyle(color: Colors.white, fontSize: 14,fontWeight: FontWeight.w600),),
+            ),
+            onTap: (){
               Navigator.of(context).pop();
               Navigator.of(context).push(
                 MaterialPageRoute(builder: (context) => SaveList()),
@@ -232,25 +234,30 @@ class NoteListWidgetState extends State<NoteListWidget> {
             },
           ),
 
-          Divider(height: 1, color: Colors.brown,),
+          Padding(
+              padding: EdgeInsets.only(top: 10,bottom: 10,left: 20,right: 20),
+              child: Divider(height: 6,color: Colors.white,),
+          ),
 
-          ListTile(
-            title: Text("New Note",
-              style: TextStyle(color: Colors.amber, fontSize: 14),),
-            onTap: () {
+          GestureDetector(
+            child: Center(
+              child: Text("新 建",
+                style: TextStyle(color: Colors.white, fontSize: 14,fontWeight: FontWeight.w600),),
+            ),
+            onTap: (){
               Navigator.of(context).pop();
               Navigator.of(context).push(
-                  MaterialPageRoute(builder: (context) => AddNote())
+                MaterialPageRoute(builder: (context) => AddNote()),
               );
             },
           ),
         ],
       ),
     ),
-      right: 0,
-      top: 60,
-      width: 110,
-      height: 140,)));
+    right: 0,
+    top: 60,
+    width: 80,
+    height: 100,)));
   }
 
   Image getImageWidget(List<String> images) {

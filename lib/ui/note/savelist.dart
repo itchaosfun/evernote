@@ -4,17 +4,17 @@ import '../../data/favorite.dart';
 // ignore: must_be_immutable
 class SaveList extends StatelessWidget {
   // This widget is the root of your application.
-  var _save = FavoriteData.instance.favoriteData;
+  var saveList = FavoriteData.instance.favoriteData;
 
   @override
   Widget build(BuildContext context) {
-    var list = _save.map((pair) {
+    var list = saveList.map((pair) {
       return new ListTile(
         title: new Text(
           pair.note,
           style: new TextStyle(
               color: Colors.grey,
-              fontSize: 18
+              fontSize: 14
           ),
         ),
       );
@@ -24,12 +24,17 @@ class SaveList extends StatelessWidget {
 
     return MaterialApp(
       theme: ThemeData(
-        primarySwatch: Colors.blueGrey,
+        appBarTheme: AppBarTheme(color: Colors.blueGrey)
       ),
-      home: new Scaffold(
-        appBar: new AppBar(
-          title: new Text(
-              "My Favorite Note"
+      home: Scaffold(
+        appBar: AppBar(
+          title: Text(
+              "我的收藏",
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 18,
+              fontWeight: FontWeight.w600
+            ),
           ),
         ),
         body: new ListView(
