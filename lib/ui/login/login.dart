@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter1/platform/widget/common_button.dart';
 import 'register.dart';
-import 'forgetpwd.dart';
+import 'package:flutter1/ui/setting/forgetpwd.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import '../../common/user_manager.dart';
 import '../../common/constance.dart';
 import '../home/home_page.dart';
 import '../../platform/widget/tips_dialog.dart';
-import 'setpwd.dart';
+import 'package:flutter1/ui/setting/setpwd.dart';
 
 void main(){ runApp(Login());}
 
