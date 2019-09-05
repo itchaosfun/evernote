@@ -5,7 +5,7 @@ class UserInfo{
   String userName;
   String password;
   String phone;
-  String birthday;
+  num birthday;
   String header;
   int gender;
 

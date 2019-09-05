@@ -28,6 +28,8 @@ dependencies:
   sqflite: ^1.1.6
   image_picker: ^0.4.12
   flutter_swiper: ^1.0.6
+  intro_slider: ^2.2.8
+  shared_preferences: ^0.5.3
 
 dev_dependencies:
   flutter_test:
@@ -54,6 +56,8 @@ flutter:
     - image/register_header_bg.jpg
     - image/note.png
     - image/default_header.png
+    - image/usercenter_header_bg.jpg
+
   #  - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

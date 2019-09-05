@@ -4,12 +4,10 @@ import 'register.dart';
 import 'package:flutter1/ui/setting/forgetpwd.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import '../../common/user_manager.dart';
-import '../../common/constance.dart';
+import '../../common/constance_code.dart';
 import '../home/home_page.dart';
 import '../../platform/widget/tips_dialog.dart';
 import 'package:flutter1/ui/setting/setpwd.dart';
-
-void main(){ runApp(Login());}
 
 class Login extends StatelessWidget{
   @override

@@ -4,7 +4,11 @@ class CommonButton extends StatelessWidget{
 
   Function _onTap;
   String _text;
-  CommonButton(this._text,this._onTap);
+  double left;
+  double right;
+  double top;
+  double bottom;
+  CommonButton(this._text,this._onTap,{this.left = 10,this.right = 10,this.top = 10,this.bottom = 10});
 
   @override
   Widget build(BuildContext context) {
@@ -12,10 +16,11 @@ class CommonButton extends StatelessWidget{
         child: Row(
           children: <Widget>[
             Expanded(child: FlatButton(
+
                 onPressed: (){
                   _onTap(context);
                 },
-                padding: EdgeInsets.only(left: 10,right: 10,top: 10,bottom: 10),
+                padding: EdgeInsets.only(left: left,right: right,top: top,bottom: bottom),
                 disabledColor: Colors.grey,
                 color: Colors.blueGrey,
                 textColor: Colors.white,
