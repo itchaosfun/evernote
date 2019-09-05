@@ -31,7 +31,7 @@ class UserDbManager extends BaseDbTable{
   createTableString() {
     return "CREATE TABLE $userTable($id INTEGER PRIMARY KEY,"
         "$userId TEXT,$userName TEXT,$password TEXT,$phone TEXT,"
-        "$birthday TEXT,$header TEXT,$gender INTEGER)";
+        "$birthday INTEGER,$header TEXT,$gender INTEGER)";
   }
 
   @override
@@ -56,6 +56,19 @@ class UserDbManager extends BaseDbTable{
   Future<UserInfo> getUserInfoByUserName(String name) async{
     var dbClient = await getDataBase();
     var result = await dbClient.query(userTable,where: "$userName=?",whereArgs: [name]);
+
+    print("result = $result");
+
+    if(result == null || result.isEmpty){
+      return null;
+    }
+
+    return UserInfo.fromSql(result.first);
+  }
+
+  Future<UserInfo> getUserInfoByUserId(String userId) async{
+    var dbClient = await getDataBase();
+    var result = await dbClient.query(userTable,where: "${this.userId}=?",whereArgs: [userId]);
 
     print("result = $result");
 

@@ -29,7 +29,7 @@ class RegisterState extends State<RegisterWidget>{
   String phone = "";
   bool isSelectHeader = false;
   String headerUrl = "";
-  String birthday = "";
+  num birthday = 0;
 
   Widget headerWidget() => Container(
     height: 200,
@@ -161,7 +161,10 @@ class RegisterState extends State<RegisterWidget>{
     padding: EdgeInsets.only(left: 20,right: 20),
     child: TextField(
       controller: TextEditingController.fromValue(TextEditingValue(
-          text: birthday,
+          text: birthday==0?"":
+          "${DateTime.fromMillisecondsSinceEpoch(birthday).year}年"
+              "${DateTime.fromMillisecondsSinceEpoch(birthday).month}月"
+              "${DateTime.fromMillisecondsSinceEpoch(birthday).day}日",
       )),
       maxLines: 1,
       autofocus: false,
@@ -178,7 +181,6 @@ class RegisterState extends State<RegisterWidget>{
 
       onTap: (){
         selectDate();
-        print("onTap");
       },
     ),
   );
@@ -246,7 +248,7 @@ class RegisterState extends State<RegisterWidget>{
       initialDatePickerMode: DatePickerMode.year,);
 
     setState(() {
-      birthday = "${dateTime.year}年${dateTime.month}月${dateTime.day}日";
+      birthday = dateTime.millisecondsSinceEpoch;
     });
   }
 
@@ -269,7 +271,7 @@ class RegisterState extends State<RegisterWidget>{
     var userInfo = UserInfo();
     userInfo.userName = userName;
     userInfo.phone = phone;
-    userInfo.birthday = birthday.isEmpty?"2000年1月1日": birthday;
+    userInfo.birthday = birthday;
     userInfo.header = headerUrl;
     userInfo.gender = gender;
     userInfo.password = phone;
