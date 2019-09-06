@@ -97,8 +97,10 @@ class UserManager {
     return int;
   }
 
-  void logout(){
+  Future<bool> logout()async{
     this.loginStatus = false;
+    var instance =  await SharedPreferences.getInstance();
+    return await instance.setString(SP_LOGINED_USERID, null);
   }
 
   Future<String> hasLogined() async{
