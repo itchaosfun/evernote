@@ -85,13 +85,17 @@ class SettingState extends State<StatefulWidget>{
               ),
 
               CommonButton("退 出 登 录", (context){
-                UserManager.getInstance().logout();
-                Navigator.pushAndRemoveUntil(this.context,MaterialPageRoute(builder: (context) => Login()), (route) => false);
+                logout();
               },top: 12,bottom: 15,)
             ],
           ),
         ),
       ),
     );
+  }
+
+  void logout() async {
+    await UserManager.getInstance().logout();
+    Navigator.pushAndRemoveUntil(this.context,MaterialPageRoute(builder: (context) => Login()), (route) => false);
   }
 }

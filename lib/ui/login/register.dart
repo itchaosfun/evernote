@@ -283,9 +283,8 @@ class RegisterState extends State<RegisterWidget>{
       context: context,
       builder: (BuildContext context){
         return TipsDialogWidget("注册成功！\n将为您跳转到登录页面", 3, (){
-          Navigator.of(context).pop(
-              MaterialPageRoute(builder: (context) => Login())
-          );
+          Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(builder: (context)=>Login()), (route)=> false);
         });
       }
     );
